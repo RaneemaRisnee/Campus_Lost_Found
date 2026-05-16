@@ -1,0 +1,223 @@
+{
+  "info": {
+    "name": "Campus Lost & Found API",
+    "_postman_id": "campus-lost-found-it2234",
+    "description": "Complete API collection for the Campus Lost & Found System — ICA-03, IT2234 Web Services & Technology",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api" },
+    { "key": "item_id", "value": "" },
+    { "key": "claim_id", "value": "" },
+    { "key": "user_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Items",
+      "item": [
+        {
+          "name": "GET All Items",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/items",
+              "query": [
+                { "key": "type", "value": "lost", "disabled": true },
+                { "key": "category", "value": "Electronics", "disabled": true },
+                { "key": "search", "value": "calculator", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Item Stats",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/items/stats"
+          }
+        },
+        {
+          "name": "GET Item By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/items/{{item_id}}"
+          }
+        },
+        {
+          "name": "POST Create Lost Item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Blue Casio FX-991ES Scientific Calculator\",\n  \"description\": \"Blue Casio scientific calculator with stickers on the back. Has my name written inside the case.\",\n  \"category\": \"Electronics\",\n  \"type\": \"lost\",\n  \"location\": \"Main Library, 2nd Floor Study Room\",\n  \"dateOccurred\": \"2024-11-20\",\n  \"contactName\": \"Amara Perera\",\n  \"contactEmail\": \"amara.perera@student.edu.lk\",\n  \"contactPhone\": \"+94 77 123 4567\",\n  \"tags\": [\"blue\", \"casio\", \"calculator\", \"fx-991\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "POST Create Found Item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/items",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Student ID Card - Faculty of IT\",\n  \"description\": \"Found a student ID card near the canteen. Has a photo but no contact number on it.\",\n  \"category\": \"ID & Cards\",\n  \"type\": \"found\",\n  \"location\": \"Main Canteen, Seating Area\",\n  \"dateOccurred\": \"2024-11-21\",\n  \"contactName\": \"Dinesh Wickramasinghe\",\n  \"contactEmail\": \"dinesh.w@student.edu.lk\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Update Item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/items/{{item_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated: Blue Casio scientific calculator FX-991ES. Has a small crack on the left corner.\",\n  \"location\": \"Main Library or IT Lab 3\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Item",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/items/{{item_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Claims",
+      "item": [
+        {
+          "name": "GET All Claims",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/claims",
+              "query": [
+                { "key": "status", "value": "pending", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Claim By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/claims/{{claim_id}}"
+          }
+        },
+        {
+          "name": "POST Submit Claim",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/claims",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"item\": \"{{item_id}}\",\n  \"claimerName\": \"Nimal Silva\",\n  \"claimerEmail\": \"nimal.silva@student.edu.lk\",\n  \"claimerPhone\": \"+94 76 987 6543\",\n  \"proofDescription\": \"It has my student ID number written in marker on the back cover. Also has a 'Physics 2023' sticker.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH Approve Claim",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/claims/{{claim_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\",\n  \"adminNote\": \"Proof verified. Item returned to owner on 22/11/2024.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PATCH Reject Claim",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/claims/{{claim_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\",\n  \"adminNote\": \"Proof of ownership did not match item description.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE Claim",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/claims/{{claim_id}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/users"
+          }
+        },
+        {
+          "name": "GET User By ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/users/{{user_id}}"
+          }
+        },
+        {
+          "name": "POST Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/users",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Amara Perera\",\n  \"email\": \"amara.perera@student.edu.lk\",\n  \"studentId\": \"IT/2021/043\",\n  \"phone\": \"+94 77 123 4567\",\n  \"role\": \"student\"\n}"
+            }
+          }
+        },
+        {
+          "name": "PUT Update User",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/users/{{user_id}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+94 70 111 2222\"\n}"
+            }
+          }
+        },
+        {
+          "name": "DELETE (Deactivate) User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/users/{{user_id}}"
+          }
+        }
+      ]
+    }
+  ]
+}
